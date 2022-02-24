@@ -1,29 +1,27 @@
 const Discord = require("discord.js");
+var Scraper = require('images-scraper');
+const google = new Scraper({
+    puppeteer: {
+        headless: true
+    }
+})
+
 module.exports = {
     name: 'scrapper',
     description: 'this is a ping command!',
-    execute(message,args){
+    async execute(client, message, args){
 
-    const puppeteer = require('puppeteer');
 
-    async function scrapeProduct(url){
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.goto(url);
-//destructuring
-        const [el] = await page.$x('//*[@id="mw-content-text"]/div[1]/figure/a/img');
-        const src = await el.getProperty('src');
-        const imgURL = await src.jsonValue();
+        const image_query = args.join(' ');
+        if(!image_query) return message.channel.send('enter image name');
+        if(image_query == 'goobue'){
+            message.channel.send('goobue loves you');
+        }
 
-        console.log({imgURL});
-        const embed = new Discord.MessageEmbed().setImage(imgURL)
-        console.log({embed})
+        const image_results = await google.scrape(image_query, 1);
+        console.log(image_results[0].url);
+        const embed = new Discord.MessageEmbed().setImage(image_results[0].url);
         message.channel.send({ embeds: [embed] })
-    }
-
-scrapeProduct('https://finalfantasy.fandom.com/wiki/Goobbue_(Final_Fantasy_XIV)');
-
-        message.channel.send('goobue loves you');
 
     }
 }

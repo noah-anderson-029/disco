@@ -29,8 +29,8 @@ client.on('messageCreate', message => {
     if(command ==='ping'){
         client.commands.get('ping').execute(message,args);
     }
-    else if(command ==='goobue'){
-        client.commands.get('scrapper').execute(message,args);
+    else if(command ==='pic'){
+        client.commands.get('scrapper').execute(client, message,args);
     }
  });
 
